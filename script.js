@@ -20,7 +20,7 @@ let ball = {
 };
 
 let particles = [];
-const MAX_PARTICLES = 50;
+const MAX_PARTICLES = 10;
 
 let wave = {
   angle: 0,
@@ -199,10 +199,21 @@ function drawFpsCounter() {
   fill(isDark ? 200 : 50, 150);
   noStroke();
   textSize(10);
-  textAlign(LEFT, BOTTOM);
-  text(`${frameRateValue.toFixed(1)} FPS`, 10, height - 10);
+  textAlign(RIGHT, BOTTOM);
+
+  const fpsText = `${frameRateValue.toFixed(1)} FPS`;
+  const coordsText = `(${mouseX}, ${mouseY})`;
+
+  // Draw FPS at bottom right with some padding from right edge
+  text(fpsText, width - 10, height - 10);
+
+  // Draw mouse coordinates left of the FPS text, with some spacing
+  const fpsWidth = textWidth(fpsText);
+  textAlign(RIGHT, BOTTOM);
+  text(coordsText, width - 20 - fpsWidth, height - 10);
   pop();
 }
+
 
 function drawGrid(size) {
   // Background
