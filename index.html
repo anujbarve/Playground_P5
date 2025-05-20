@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elegant p5.js Interface</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              light: '#6366f1',
+              DEFAULT: '#4f46e5',
+              dark: '#4338ca',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
+            'slide-up': 'slideUp 0.3s ease-out forwards',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(10px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- p5.js -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+</head>
+<body class="bg-white text-black dark:bg-gray-900 dark:text-white font-sans overflow-hidden">
+
+  <!-- Topbar - with smooth transitions -->
+  <div id="topbar" class="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-6 py-4 bg-white/90 backdrop-blur-sm dark:bg-gray-900/90 shadow-sm transition-all duration-300">
+    <div class="text-lg font-medium tracking-tight text-primary-dark dark:text-primary-light">Canvas Studio</div>
+    <div class="flex items-center space-x-3">
+      <div class="relative">
+        <select id="animationSelector"
+                class="appearance-none pl-4 pr-8 py-2 rounded-full text-sm bg-gray-100 dark:bg-gray-800 border-none focus:ring-2 focus:ring-primary focus:outline-none transition-all">
+          <option value="grid">Grid Pattern</option>
+          <option value="ball">Bouncing Ball</option>
+          <option value="particles">Particles</option>
+          <option value="wave">Wave Animation</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-gray-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+      
+      <button id="toggleDark"
+              class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
+        <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+        <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg>
+      </button>
+      
+      <button id="toggleTopbar"
+              class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
+        <svg id="hideIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 15l7-7 7 7"></path>
+        </svg>
+        <svg id="showIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Canvas Container -->
+  <div id="canvasContainer" class="w-full h-screen pt-16 transition-all duration-300"></div>
+
+  <!-- Controls Panel - Minimal transparent controls when topbar is hidden -->
+  <div id="hiddenControls" class="fixed top-4 right-4 z-20 hidden opacity-0 transition-opacity duration-300">
+    <button id="showTopbar" class="p-2 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-black/40 transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Info Panel - Shows on new animations -->
+  <div id="infoPanel" class="fixed bottom-4 left-4 p-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-lg max-w-xs opacity-0 pointer-events-none transition-opacity duration-300">
+    <h3 id="infoPanelTitle" class="text-sm font-medium text-gray-900 dark:text-white mb-1"></h3>
+    <p id="infoPanelDesc" class="text-xs text-gray-600 dark:text-gray-300"></p>
+  </div>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>
