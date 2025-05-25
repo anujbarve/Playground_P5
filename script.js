@@ -1,5 +1,5 @@
 // Animation state
-let currentAnimation = "grid";
+let currentAnimation = "cnn";
 let isDark = true;
 let isTopbarVisible = true;
 
@@ -7,46 +7,24 @@ let isTopbarVisible = true;
 let frameRateValue = 0;
 let lastFpsUpdateTime = 0;
 
-// Animation objects
-let ball = {
-  x: 200,
-  y: 200,
-  vx: 3,
-  vy: 0,
-  radius: 30,
-  gravity: 0.3,
-  damping: 0.92,
-  color: { h: 220, s: 70, b: 100, a: 0.9 },
-};
-
-let particles = [];
-const MAX_PARTICLES = 10;
-
-let wave = {
-  angle: 0,
-  amplitude: 75,
-  period: 500,
-  speed: 0.02,
+const colorObject = {
+  brightBlue: { h: 220, s: 80, b: 90, a: 1.0 },
+  vibrantMagenta: { h: 330, s: 70, b: 100, a: 1.0 },
+  warmYellow: { h: 50, s: 100, b: 90, a: 1.0 },
+  springGreen: { h: 120, s: 60, b: 80, a: 1.0 },
+  redOrange: { h: 20, s: 90, b: 100, a: 1.0 },
+  brightCyan: { h: 180, s: 60, b: 100, a: 1.0 },
+  deepPurple: { h: 280, s: 70, b: 85, a: 1.0 },
+  limeGreen: { h: 90, s: 70, b: 100, a: 1.0 },
+  lightGray: { h: 0, s: 0, b: 90, a: 1.0 },
+  sunsetOrange: { h: 30, s: 100, b: 100, a: 1.0 },
 };
 
 // Animation descriptions for info panel
 const animationInfo = {
-  grid: {
-    title: "Grid Pattern",
-    description:
-      "A minimalist grid layout that responds to window size changes.",
-  },
-  ball: {
-    title: "Bouncing Ball",
-    description: "Physics simulation with gravity and dampening effects.",
-  },
-  particles: {
-    title: "Particle System",
-    description: "Dynamic particles that respond to cursor movement.",
-  },
-  wave: {
-    title: "Wave Animation",
-    description: "A sine wave visualization with adjustable parameters.",
+  cnn: {
+    title: "CNN",
+    description: "Convolutional Neural Network",
   },
 };
 
@@ -62,11 +40,6 @@ function setup() {
   colorMode(HSB, 360, 100, 100, 1.0);
 
   frameRate(120);
-
-  // Initialize particles
-  for (let i = 0; i < MAX_PARTICLES; i++) {
-    particles.push(createParticle());
-  }
 
   // Set up event listeners
   setupEventListeners();
@@ -175,17 +148,8 @@ function draw() {
 
   // Draw the current animation
   switch (currentAnimation) {
-    case "grid":
-      drawGrid(40);
-      break;
-    case "ball":
-      drawBouncingBall();
-      break;
-    case "particles":
-      drawParticles();
-      break;
-    case "wave":
-      drawWave();
+    case "cnn":
+      drawCNN();
       break;
   }
 
@@ -214,7 +178,6 @@ function drawFpsCounter() {
   pop();
 }
 
-
 function drawGrid(size) {
   // Background
   background(isDark ? color(230, 15, 10) : color(0, 0, 100));
@@ -234,23 +197,148 @@ function drawGrid(size) {
   }
 }
 
-function drawBouncingBall() {
-  // Background with subtle gradient
+function drawCNN() {
   setGradientBackground();
 
-  // Shadow
-  noStroke();
-  fill(0, 0, 0, 0.1);
-  ellipse(ball.x, height - 10, ball.radius * 1.5, ball.radius * 0.5);
+  rectMode(CENTER);
 
-  // Ball with shading
-  drawShadedBall();
+  stroke(
+    colorObject.brightCyan.h,
+    colorObject.brightCyan.s,
+    colorObject.brightCyan.b,
+    colorObject.brightCyan.a
+  );
 
-  // Physics update
-  updateBallPhysics();
+  fill(
+    colorObject.brightCyan.h,
+    colorObject.brightCyan.s,
+    colorObject.brightCyan.b,
+    colorObject.brightCyan.a
+  );
 
-  // Subtle trail effect
-  drawBallTrail();
+  line(100, 400, 300, 400);
+
+  rect(100, 400, 100, 100);
+
+  fill("white");
+  text("Input Image",50,500);
+
+  fill(
+    colorObject.deepPurple.h,
+    colorObject.deepPurple.s,
+    colorObject.deepPurple.b,
+    colorObject.deepPurple.a
+  );
+
+  line(300, 400, 500, 400);
+
+  rect(290, 390, 100, 100);
+  rect(300, 400, 100, 100);
+  rect(310, 410, 100, 100);
+
+  fill("white");
+  text("Convolution \n + Activation",250,500);
+
+  fill(
+    colorObject.brightBlue.h,
+    colorObject.brightBlue.s,
+    colorObject.brightBlue.b,
+    colorObject.brightBlue.a
+  );
+
+  line(500, 400, 800, 100);
+  line(500, 400, 800, 300);
+  line(500, 400, 800, 500);
+  line(500, 400, 800, 700);
+
+  rect(490, 390, 100, 100);
+  rect(500, 400, 100, 100);
+  rect(510, 410, 100, 100);
+
+  fill("white");
+  text("Pooling",450,500);
+
+  fill(
+    colorObject.lightGray.h,
+    colorObject.lightGray.s,
+    colorObject.lightGray.b,
+    colorObject.lightGray.a
+  );
+
+  line(800, 100, 1000, 200);
+  line(800, 100, 1000, 400);
+  line(800, 100, 1000, 600);
+
+  line(800, 300, 1000, 200);
+  line(800, 300, 1000, 400);
+  line(800, 300, 1000, 600);
+
+  line(800, 500, 1000, 200);
+  line(800, 500, 1000, 400);
+  line(800, 500, 1000, 600);
+
+  line(800, 700, 1000, 200);
+  line(800, 700, 1000, 400);
+  line(800, 700, 1000, 600);
+
+  ellipse(800, 100, 100);
+  ellipse(800, 300, 100);
+  ellipse(800, 500, 100);
+  ellipse(800, 700, 100);
+
+  fill("white");
+  text("Flatten",800,800);
+
+  fill(
+    colorObject.limeGreen.h,
+    colorObject.limeGreen.s,
+    colorObject.limeGreen.b,
+    colorObject.limeGreen.a
+  );
+
+  line(1000, 200, 1200, 400);
+  line(1000, 400, 1200, 400);
+  line(1000, 600, 1200, 400);
+
+  ellipse(1000, 200, 100);
+  ellipse(1000, 400, 100);
+  ellipse(1000, 600, 100);
+
+  fill("white");
+  text("Fully Connected",1000,700);
+
+  fill(
+    colorObject.lightGray.h,
+    colorObject.lightGray.s,
+    colorObject.lightGray.b,
+    colorObject.lightGray.a
+  );
+
+  ellipse(1200, 400, 100);
+    fill("white");
+  text("Output",1200,500);
+  
+}
+
+function movingLine(x1,y1,x2,y2)
+{
+  
+  const interval = 10;
+
+  for(let i = 100; i < 1000; i = i + 10)
+  {
+    strokeWeight(2);
+    point(i,200);
+  }
+
+  for(let i = 100; i < 1000; i = i + 10)
+  {
+    strokeWeight(2);
+    point(i,200);
+  }
+
+
+  line(x1,y1,x2,y2);
 }
 
 function setGradientBackground() {
@@ -268,156 +356,6 @@ function setGradientBackground() {
   // Add subtle grid
   stroke(isDark ? color(0, 0, 60, 0.05) : color(0, 0, 40, 0.05));
   strokeWeight(0.5);
-  const gridSize = 40;
-  for (let x = 0; x < width; x += gridSize) {
-    line(x, 0, x, height);
-  }
-  for (let y = 0; y < height; y += gridSize) {
-    line(0, y, width, y);
-  }
-}
-
-function drawShadedBall() {
-  // Main ball
-  fill(ball.color.h, ball.color.s, ball.color.b, ball.color.a);
-  noStroke();
-  ellipse(ball.x, ball.y, ball.radius * 2);
-
-  // Highlight
-  fill(ball.color.h, ball.color.s * 0.5, ball.color.b * 1.2, 0.4);
-  ellipse(
-    ball.x - ball.radius * 0.3,
-    ball.y - ball.radius * 0.3,
-    ball.radius * 0.8
-  );
-}
-
-function updateBallPhysics() {
-  // Apply gravity
-  ball.vy += ball.gravity;
-
-  // Update position
-  ball.x += ball.vx;
-  ball.y += ball.vy;
-
-  // Floor collision
-  if (ball.y + ball.radius > height - 10) {
-    ball.y = height - 10 - ball.radius;
-    ball.vy *= -ball.damping;
-
-    // Only add horizontal friction when touching the ground
-    ball.vx *= 0.98;
-  }
-
-  // Wall collision
-  if (ball.x + ball.radius > width) {
-    ball.x = width - ball.radius;
-    ball.vx *= -ball.damping;
-  } else if (ball.x - ball.radius < 0) {
-    ball.x = ball.radius;
-    ball.vx *= -ball.damping;
-  }
-}
-
-function drawBallTrail() {
-  // Simple motion trail
-  if (abs(ball.vy) > 1 || abs(ball.vx) > 1) {
-    noStroke();
-    for (let i = 1; i <= 5; i++) {
-      const size = map(i, 1, 5, ball.radius * 1.8, ball.radius * 0.5);
-      const alpha = map(i, 1, 5, 0.05, 0.01);
-      fill(ball.color.h, ball.color.s, ball.color.b, alpha);
-      ellipse(ball.x - ball.vx * i * 1.5, ball.y - ball.vy * i * 1.5, size * 2);
-    }
-  }
-}
-
-function createParticle() {
-  return {
-    x: random(width),
-    y: random(height),
-    size: random(3, 8),
-    speedX: random(-1, 1),
-    speedY: random(-1, 1),
-    hue: random(0, 360),
-    life: 255,
-    lifeReduction: random(0.5, 1.5),
-  };
-}
-
-function drawParticles() {
-  // Subtle background
-  background(isDark ? color(230, 15, 10, 0.1) : color(0, 0, 98, 0.2));
-
-  // Draw connecting lines
-  strokeWeight(0.3);
-  const connectDistance = 100;
-
-  for (let i = 0; i < particles.length; i++) {
-    const p1 = particles[i];
-
-    // Connect to nearby particles
-    for (let j = i + 1; j < particles.length; j++) {
-      const p2 = particles[j];
-      const d = dist(p1.x, p1.y, p2.x, p2.y);
-
-      if (d < connectDistance) {
-        const alpha = map(d, 0, connectDistance, 0.5, 0);
-        stroke(isDark ? color(210, 70, 80, alpha) : color(210, 70, 60, alpha));
-        line(p1.x, p1.y, p2.x, p2.y);
-      }
-    }
-
-    // Draw particle
-    noStroke();
-    fill(p1.hue, 70, isDark ? 90 : 70, map(p1.size, 3, 8, 0.4, 0.7));
-    circle(p1.x, p1.y, p1.size);
-
-    // Move particle
-    p1.x += p1.speedX;
-    p1.y += p1.speedY;
-
-    // Slightly attract to mouse when moved
-    if (mouseIsPressed || frameCount % 60 === 0) {
-      const mouseForce = 0.05;
-      const mouseDistance = dist(p1.x, p1.y, mouseX, mouseY);
-      if (mouseDistance < 200) {
-        p1.speedX += ((mouseX - p1.x) * mouseForce) / 100;
-        p1.speedY += ((mouseY - p1.y) * mouseForce) / 100;
-      }
-    }
-
-    // Apply some friction
-    p1.speedX *= 0.99;
-    p1.speedY *= 0.99;
-
-    // Add some randomness
-    p1.speedX += random(-0.1, 0.1);
-    p1.speedY += random(-0.1, 0.1);
-
-    // Speed limit
-    const maxSpeed = 2;
-    const currentSpeed = sqrt(p1.speedX * p1.speedX + p1.speedY * p1.speedY);
-    if (currentSpeed > maxSpeed) {
-      p1.speedX = (p1.speedX / currentSpeed) * maxSpeed;
-      p1.speedY = (p1.speedY / currentSpeed) * maxSpeed;
-    }
-
-    // Wrap around screen edges
-    if (p1.x < 0) p1.x = width;
-    if (p1.x > width) p1.x = 0;
-    if (p1.y < 0) p1.y = height;
-    if (p1.y > height) p1.y = 0;
-  }
-}
-
-function drawWave() {
-  // Subtle dark or light background
-  background(isDark ? color(230, 15, 10) : color(0, 0, 100));
-
-  // Draw subtle grid
-  stroke(isDark ? color(210, 30, 30, 0.1) : color(210, 30, 30, 0.1));
-  strokeWeight(0.5);
   const gridSize = 50;
   for (let x = 0; x < width; x += gridSize) {
     line(x, 0, x, height);
@@ -425,70 +363,9 @@ function drawWave() {
   for (let y = 0; y < height; y += gridSize) {
     line(0, y, width, y);
   }
-
-  // Update wave angle
-  wave.angle += wave.speed;
-
-  // Draw multiple wave lines
-  for (let waveOffset = 0; waveOffset < 3; waveOffset++) {
-    drawSingleWave(waveOffset);
-  }
-}
-
-function drawSingleWave(waveOffset) {
-  const hue = 180 + waveOffset * 30;
-  const yOffset = height * 0.5 + waveOffset * 40;
-  const waveAlpha = map(waveOffset, 0, 2, 0.8, 0.3);
-
-  noFill();
-  stroke(hue, 80, isDark ? 90 : 60, waveAlpha);
-  strokeWeight(3 - waveOffset);
-
-  beginShape();
-  for (let x = 0; x < width + 10; x += 10) {
-    const angle = wave.angle + x * (TWO_PI / wave.period);
-    const y = yOffset + sin(angle) * wave.amplitude;
-    vertex(x, y);
-  }
-  endShape();
-
-  // Add some particles flowing along the wave for the main wave
-  if (waveOffset === 0 && frameCount % 5 === 0) {
-    const particleX = random(width);
-    const angle = wave.angle + particleX * (TWO_PI / wave.period);
-    const particleY = yOffset + sin(angle) * wave.amplitude;
-
-    noStroke();
-    fill(hue, 80, isDark ? 90 : 70, 0.7);
-    circle(particleX, particleY, 5);
-
-    // Echo
-    fill(hue, 80, isDark ? 90 : 70, 0.3);
-    circle(particleX, particleY, 10);
-  }
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight - (isTopbarVisible ? 64 : 0));
   redraw();
-}
-
-function mouseMoved() {
-  // Add interactivity to specific animations
-  if (currentAnimation === "particles") {
-    // Add subtle attraction to cursor
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      const d = dist(p.x, p.y, mouseX, mouseY);
-      if (d < 100) {
-        const angle = atan2(mouseY - p.y, mouseX - p.x);
-        const force = map(d, 0, 100, 0.3, 0);
-        p.speedX += cos(angle) * force;
-        p.speedY += sin(angle) * force;
-      }
-    }
-  } else if (currentAnimation === "wave") {
-    // Make wave respond to mouse Y position
-    wave.amplitude = map(mouseY, 0, height, 20, 120);
-  }
 }
